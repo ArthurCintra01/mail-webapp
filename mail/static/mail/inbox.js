@@ -31,26 +31,31 @@ function load_mailbox(mailbox) {
   // Show the mailbox name
   document.querySelector('#emails-view').innerHTML = `<h3>${mailbox.charAt(0).toUpperCase() + mailbox.slice(1)}</h3>`;
   // show emails
-  if (mailbox === 'inbox'){
-    fetch('/emails/inbox')
-    .then(response => response.json())
-    .then(emails => {
-      console.log(emails);
-      for (const email in emails){
-        // getting data
-        sender = emails[email].sender;
-        subject = emails[email].subject;
-        timestamp = emails[email].timestamp;
-        //creating div
-        let div = document.createElement('div')
-        div.style = 'border: 1px solid black; margin-top: 10px; padding: 10px;'
-        div.id = 'container';
-        div.innerHTML = `${sender} ${subject} ${timestamp}` //colocar espacamento entre os elementos
-        document.querySelector('#emails-view').append(div);
+  fetch(`/emails/${mailbox}`)
+  .then(response => response.json())
+  .then(emails => {
+    console.log(emails);
+    for (const email in emails){
+      // getting data
+      sender = emails[email].sender;
+      subject = emails[email].subject;
+      timestamp = emails[email].timestamp;
+      //creating div
+      let div = document.createElement('div');
+      //let a = document.createElement('a');
+      //a.id = `id_${emails[email].id}`;
+      if (emails[email].read === true){
+        div.style = 'background-color: #c0c0c0; border: 1px solid black; margin-top: 10px; padding: 10px;';
+      }else{
+        div.style = 'border: 1px solid black; margin-top: 10px; padding: 10px;';
       }
-    })
-  }
- 
+      //div.id = `div_${emails[email].id}`;
+      div.innerHTML = `<div style="display:inline-block;"><strong>${sender}</strong></div>
+      <div style="display:inline-block; padding-left: 15px; width: 65%;">${subject}</div>
+      <div style="display:inline-block;">${timestamp}</div>`;
+      document.querySelector('#emails-view').append(div);
+    }
+  })
 }
 
 function send_email(event){
