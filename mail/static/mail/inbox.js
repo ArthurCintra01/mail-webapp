@@ -37,14 +37,15 @@ function load_mailbox(mailbox) {
     .then(emails => {
       console.log(emails);
       for (const email in emails){
+        // getting data
         sender = emails[email].sender;
         subject = emails[email].subject;
         timestamp = emails[email].timestamp;
+        //creating div
         let div = document.createElement('div')
-        div.style.border = '1px solid black';
-        div.style.marginTop = '10px';
-        div.style.padding = '10px';
-        div.innerHTML = `${sender}\u00A0\u00A0\u00A0\u00A0\u00A0\u00A0\u00A0\u00A0 ${subject}\u00A0\u00A0\u00A0\u00A0\u00A0\u00A0\u00A0\u00A0${timestamp}`;
+        div.style = 'border: 1px solid black; margin-top: 10px; padding: 10px;'
+        div.id = 'container';
+        div.innerHTML = `${sender} ${subject} ${timestamp}`
         document.querySelector('#emails-view').append(div);
       }
     })
