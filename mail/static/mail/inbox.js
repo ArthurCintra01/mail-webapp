@@ -36,13 +36,10 @@ function load_mailbox(mailbox) {
   .then(emails => {
     console.log(emails);
     for (const email in emails){
-      // getting data
       sender = emails[email].sender;
       subject = emails[email].subject;
       timestamp = emails[email].timestamp;
-      //creating div
       let div = document.createElement('div');
-      // div.style='-moz-user-select: none; -webkit-user-select: none; -ms-user-select:none; user-select:none; -o-user-select:none;'
       if (emails[email].read === true){
         div.style = 'cursor: pointer; background-color: #c0c0c0; border: 1px solid black; margin-top: 10px; padding: 10px;';
       }else{
