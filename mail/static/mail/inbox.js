@@ -31,18 +31,20 @@ function load_mailbox(mailbox) {
   // Show the mailbox name
   document.querySelector('#emails-view').innerHTML = `<h3>${mailbox.charAt(0).toUpperCase() + mailbox.slice(1)}</h3>`;
   // show emails
-  const list_of_emails = document.createElement('ul');
-  document.querySelector('#emails-view').append(list_of_emails);
-  
   if (mailbox === 'inbox'){
     fetch('/emails/inbox')
     .then(response => response.json())
     .then(emails => {
       console.log(emails);
       for (const email in emails){
-        let li = document.createElement('li')
-        li.innerHTML = JSON.stringify(emails[email]);
-        document.querySelector('#emails-view').append(li);
+        sender = emails[email].sender;
+        subject = emails[email].subject;
+        let div = document.createElement('div')
+        div.style.border = '1px solid black';
+        div.style.marginTop = '10px';
+        div.style.padding = '10px';
+        div.innerHTML = `${sender} \t\t ${subject}`;
+        document.querySelector('#emails-view').append(div);
       }
     })
   }
