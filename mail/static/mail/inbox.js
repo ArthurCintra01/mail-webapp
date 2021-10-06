@@ -45,7 +45,7 @@ function load_mailbox(mailbox) {
         let div = document.createElement('div')
         div.style = 'border: 1px solid black; margin-top: 10px; padding: 10px;'
         div.id = 'container';
-        div.innerHTML = `${sender} ${subject} ${timestamp}`
+        div.innerHTML = `${sender} ${subject} ${timestamp}` //colocar espacamento entre os elementos
         document.querySelector('#emails-view').append(div);
       }
     })
