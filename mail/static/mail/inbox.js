@@ -39,11 +39,12 @@ function load_mailbox(mailbox) {
       for (const email in emails){
         sender = emails[email].sender;
         subject = emails[email].subject;
+        timestamp = emails[email].timestamp;
         let div = document.createElement('div')
         div.style.border = '1px solid black';
         div.style.marginTop = '10px';
         div.style.padding = '10px';
-        div.innerHTML = `${sender} \t\t ${subject}`;
+        div.innerHTML = `${sender}\u00A0\u00A0\u00A0\u00A0\u00A0\u00A0\u00A0\u00A0 ${subject}\u00A0\u00A0\u00A0\u00A0\u00A0\u00A0\u00A0\u00A0${timestamp}`;
         document.querySelector('#emails-view').append(div);
       }
     })
