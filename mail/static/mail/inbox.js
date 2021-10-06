@@ -42,24 +42,39 @@ function load_mailbox(mailbox) {
       timestamp = emails[email].timestamp;
       //creating div
       let div = document.createElement('div');
-      //let a = document.createElement('a');
-      //a.id = `id_${emails[email].id}`;
+      // div.style='-moz-user-select: none; -webkit-user-select: none; -ms-user-select:none; user-select:none; -o-user-select:none;'
       if (emails[email].read === true){
-        div.style = 'background-color: #c0c0c0; border: 1px solid black; margin-top: 10px; padding: 10px;';
+        div.style = 'cursor: pointer; background-color: #c0c0c0; border: 1px solid black; margin-top: 10px; padding: 10px;';
       }else{
-        div.style = 'border: 1px solid black; margin-top: 10px; padding: 10px;';
+        div.style = 'cursor: pointer; border: 1px solid black; margin-top: 10px; padding: 10px;';
       }
-      //div.id = `div_${emails[email].id}`;
       div.innerHTML = `<div style="display:inline-block;"><strong>${sender}</strong></div>
       <div style="display:inline-block; padding-left: 15px; width: 65%;">${subject}</div>
       <div style="display:inline-block;">${timestamp}</div>`;
+      div.addEventListener('click', () => load_email(emails[email]));
       document.querySelector('#emails-view').append(div);
     }
   })
 }
 
+function load_email(email){
+  fetch(`emails/${email.id}`, {
+    method: 'PUT',
+    body: JSON.stringify({
+      read: true
+    })
+  })
+  document.querySelector('#emails-view').innerHTML = 
+  `<div style='padding-bottom:20px; border-bottom: 1px solid #c0c0c0;'><strong>From:</strong> ${email.sender}<br>
+  <strong>To:</strong> ${email.recipients}<br>
+  <strong>Subject:</strong> ${email.subject}<br>
+  <strong>Timestamp:</strong> ${email.timestamp}<br>
+  <button id="reply" style="font-size: 0.8em; padding: 6px; margin-top:10px;"class="btn btn-outline-primary">Reply</button></div>
+  <p style="margin-top:10px;">${email.body}</p>`;
+}
+
 function send_email(event){
-  event.preventDefault()
+  event.preventDefault();
   const recipients = document.querySelector('#compose-recipients').value
   const subject = document.querySelector('#compose-subject').value
   const body = document.querySelector('#compose-body').value
