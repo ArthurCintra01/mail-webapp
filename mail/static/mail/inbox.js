@@ -49,7 +49,7 @@ function load_mailbox(mailbox) {
         div.style = 'cursor: pointer; border: 1px solid black; margin-top: 10px; padding: 10px;';
       }
       div.innerHTML = `<div style="display:inline-block;"><strong>${sender}</strong></div>
-      <div style="display:inline-block; padding-left: 15px; width: 65%;">${subject}</div>
+      <div style="display:inline-block; padding-left: 15px; width: 70%;">${subject}</div>
       <div style="display:inline-block;">${timestamp}</div>`;
       div.addEventListener('click', () => load_email(emails[email]));
       document.querySelector('#emails-view').append(div);
