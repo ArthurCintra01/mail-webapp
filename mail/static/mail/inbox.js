@@ -41,36 +41,15 @@ function load_mailbox(mailbox) {
       timestamp = emails[email].timestamp;
       let div = document.createElement('div');
       if (emails[email].read === true){
-        div.style = 'display: inline-block; width: 91%; cursor: pointer; background-color: #c0c0c0; border: 1px solid black; margin-top: 10px; padding-top: 10px;  padding-bottom: 10px;  padding-left: 20px;';
+        div.style = 'display: inline-block; width: 100%; cursor: pointer; background-color: #c0c0c0; border: 1px solid black; margin-top: 10px; padding-top: 10px;  padding-bottom: 10px;  padding-left: 20px;';
       }else{
-        div.style = 'display: inline-block; width: 91%; cursor: pointer; border: 1px solid black; margin-top: 10px; padding-top: 10px;  padding-bottom: 10px;  padding-left: 20px;';
+        div.style = 'display: inline-block; width: 100%; cursor: pointer; border: 1px solid black; margin-top: 10px; padding-top: 10px;  padding-bottom: 10px;  padding-left: 20px;';
       }
       div.innerHTML = `<div style="display:inline-block;"><strong>${sender}</strong></div>
       <div style="display:inline-block; padding-left: 15px; width: 60%;">${subject}</div>
       <div style="display:inline-block;">${timestamp}</div>`;
-      let btn = document.createElement('button');
-      if (emails[email].archived === true){
-        btn.innerHTML = 'Unarchive';
-        btn.style = 'font-size: 1.2em; margin-left: 10px; padding:8px;';
-        if (emails[email].read === true){
-          div.style = 'background-color: #c0c0c0; display: inline-block; width: 89%; cursor: pointer; border: 1px solid black; margin-top: 10px; padding-top: 10px;  padding-bottom: 10px;  padding-left: 20px;';
-        }else{
-          div.style = 'display: inline-block; width: 89%; cursor: pointer; border: 1px solid black; margin-top: 10px; padding-top: 10px;  padding-bottom: 10px;  padding-left: 20px;';
-        }
-      }else{
-        btn.innerHTML = 'Archive'; 
-        btn.style = 'font-size: 1.2em; margin-left: 10px; padding:8px;';
-      }
-      btn.addEventListener('click', () => archive(emails[email]));
-      btn.classList = 'btn btn-sm btn-outline-primary';
       div.addEventListener('click', () => load_email(emails[email]));
-      if(mailbox === 'sent'){
-        div.style.width = '100%';
-      }
       document.querySelector('#emails-view').append(div);
-      if (mailbox != 'sent'){
-        document.querySelector('#emails-view').append(btn);
-      }
     }
   })
 }
@@ -84,7 +63,7 @@ function archive(email){
       })
     })
     .then(() => {
-        load_mailbox('archive');
+        load_mailbox('inbox');
     });
   }else{
     fetch(`/emails/${email.id}`, {
@@ -106,14 +85,22 @@ function load_email(email){
       read: true
     })
   })
+  if (email.archived === true){
+    is_archived = 'Unarquive';
+  }
+  else{
+    is_archived = 'Archive';
+  }
   document.querySelector('#emails-view').innerHTML = 
   `<div style='padding-bottom:20px; border-bottom: 1px solid #c0c0c0;'><strong>From:</strong> ${email.sender}<br>
   <strong>To:</strong> ${email.recipients}<br>
   <strong>Subject:</strong> ${email.subject}<br>
   <strong>Timestamp:</strong> ${email.timestamp}<br>
   <button id="reply" style="font-size: 0.8em; padding: 6px; margin-top:10px;"class="btn btn-outline-primary">Reply</button>
-  <button id="archive" style="font-size: 0.8em; padding: 6px; margin-top:10px;"class="btn btn-outline-primary">Archive</button></div>
+  <button id="archive_btn" style="font-size: 0.8em; padding: 6px; margin-top:10px;"class="btn btn-outline-primary">${is_archived}</button></div>
   <p style="margin-top:10px;">${email.body}</p>`;
+  let archive_btn = document.getElementById('archive_btn')
+  archive_btn.addEventListener('click', ()=> archive(email))
 }
 
 function send_email(event){
