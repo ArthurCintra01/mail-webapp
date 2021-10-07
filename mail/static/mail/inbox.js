@@ -96,21 +96,42 @@ function load_email(email, is_sent){
     is_archived = 'Archive';
   }
   document.querySelector('#emails-view').innerHTML = 
-  `<div id="email_view" style='padding-bottom:20px; border-bottom: 1px solid #c0c0c0;'><strong>From:</strong> ${email.sender}<br>
+  `<div id="email_info" style='padding-bottom:20px; border-bottom: 1px solid #c0c0c0;'><strong>From:</strong> ${email.sender}<br>
   <strong>To:</strong> ${email.recipients}<br>
   <strong>Subject:</strong> ${email.subject}<br>
   <strong>Timestamp:</strong> ${email.timestamp}<br>
-  <button id="reply" style="font-size: 0.8em; padding: 6px; margin-top:10px;"class="btn btn-outline-primary">Reply</button>
   </div>
   <p style="margin-top:10px;">${email.body}</p>`;
+  let reply_btn = document.createElement('button');
+  reply_btn.style = "font-size: 0.8em; padding: 6px; margin-top:10px;"
+  reply_btn.classList = "btn btn-outline-primary";
+  reply_btn.innerHTML = 'Reply';
+  reply_btn.addEventListener('click', ()=> reply_email(email));
+  document.querySelector('#email_info').append(reply_btn);
   if (is_sent === false){
     let archive_btn = document.createElement('button');
-    archive_btn.style = "font-size: 0.8em; padding: 6px; margin-top:10px;"
+    archive_btn.style = "font-size: 0.8em; padding: 6px; margin-top:10px; margin-left: 5px;";
     archive_btn.classList = "btn btn-outline-primary";
     archive_btn.innerHTML = `${is_archived}`;
     archive_btn.addEventListener('click', ()=> archive(email))
-    document.querySelector('#email_view').append(archive_btn);
+    document.querySelector('#email_info').append(archive_btn);
   }
+}
+
+function reply_email(email){
+  document.querySelector('#emails-view').style.display = 'none';
+  document.querySelector('#compose-view').style.display = 'block';
+
+  document.querySelector('#compose-recipients').value = `${email.sender}`;
+  let subject = email.subject;
+  if (subject.includes("Re:")){
+    document.querySelector('#compose-subject').value = `${email.subject}`;
+  }else{
+    document.querySelector('#compose-subject').value = `Re: ${email.subject}`;
+  } 
+  document.querySelector('#compose-body').value = `On ${email.timestamp} ${email.sender} wrote: ${email.body}`;
+  const form = document.getElementById('compose-form');
+  form.addEventListener('submit', send_email)
 }
 
 function send_email(event){
