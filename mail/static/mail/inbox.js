@@ -23,18 +23,10 @@ function compose_email() {
 }
 
 function load_mailbox(mailbox) {
-  
-  // Show the mailbox and hide other views
-  document.querySelector('#emails-view').style.display = 'block';
-  document.querySelector('#compose-view').style.display = 'none';
-
-  // Show the mailbox name
-  document.querySelector('#emails-view').innerHTML = `<h3>${mailbox.charAt(0).toUpperCase() + mailbox.slice(1)}</h3>`;
-  // show emails
   fetch(`/emails/${mailbox}`)
   .then(response => response.json())
   .then(emails => {
-    console.log(emails);
+    document.querySelector('#emails-view').innerHTML = `<h3>${mailbox.charAt(0).toUpperCase() + mailbox.slice(1)}</h3>`;
     for (const email in emails){
       sender = emails[email].sender;
       subject = emails[email].subject;
@@ -56,6 +48,9 @@ function load_mailbox(mailbox) {
       document.querySelector('#emails-view').append(div);
     }
   })
+   // Show the mailbox and hide other views
+   document.querySelector('#emails-view').style.display = 'block';
+   document.querySelector('#compose-view').style.display = 'none';
 }
 
 function archive(email){
@@ -121,19 +116,22 @@ function load_email(email, is_sent){
 }
 
 function reply_email(email){
+  fetch(`emails/${email.id}`)
+  .then(response => response.json())
+  .then(email => {
+    document.querySelector('#compose-recipients').value = `${email.sender}`;
+    let subject = email.subject;
+    if (subject.includes("Re:")){
+      document.querySelector('#compose-subject').value = `${email.subject}`;
+    }else{
+      document.querySelector('#compose-subject').value = `Re: ${email.subject}`;
+    } 
+    document.querySelector('#compose-body').value = `On ${email.timestamp} ${email.sender} wrote: ${email.body}`;
+    const form = document.getElementById('compose-form');
+    form.addEventListener('submit', send_email)
+  })
   document.querySelector('#emails-view').style.display = 'none';
-  document.querySelector('#compose-view').style.display = 'block';
-
-  document.querySelector('#compose-recipients').value = `${email.sender}`;
-  let subject = email.subject;
-  if (subject.includes("Re:")){
-    document.querySelector('#compose-subject').value = `${email.subject}`;
-  }else{
-    document.querySelector('#compose-subject').value = `Re: ${email.subject}`;
-  } 
-  document.querySelector('#compose-body').value = `On ${email.timestamp} ${email.sender} wrote: \n${email.body}`;
-  const form = document.getElementById('compose-form');
-  form.addEventListener('submit', send_email)
+  document.querySelector('#compose-view').style.display = 'block'; 
 }
 
 function send_email(event){
