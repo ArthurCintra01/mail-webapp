@@ -83,12 +83,14 @@ function archive(email){
 }
 
 function load_email(email, is_sent){
-  fetch(`emails/${email.id}`, {
-    method: 'PUT',
-    body: JSON.stringify({
-      read: true
+  if (email.read === false){
+    fetch(`emails/${email.id}`, {
+      method: 'PUT',
+      body: JSON.stringify({
+        read: true
+      })
     })
-  })
+  }
   if (email.archived === true){
     is_archived = 'Unarquive';
   }
