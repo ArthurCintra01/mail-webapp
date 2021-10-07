@@ -41,9 +41,9 @@ function load_mailbox(mailbox) {
       timestamp = emails[email].timestamp;
       let div = document.createElement('div');
       if (emails[email].read === true){
-        div.style = 'display: inline-block; width: 100%; cursor: pointer; background-color: #dfdfdf; border: 1px solid #afafaf; margin-top: 10px; padding-top: 10px;  padding-bottom: 10px;  padding-left: 15px;';
+        div.style = 'display: inline-block; width: 100%; cursor: pointer; background-color: #dfdfdf; border: 1px solid #afafaf; border-radius: 5px; margin-top: 10px; padding-top: 10px;  padding-bottom: 10px;  padding-left: 15px;';
       }else{
-        div.style = 'display: inline-block; width: 100%; cursor: pointer; border: 1px solid #afafaf; margin-top: 10px; padding-top: 10px;  padding-bottom: 10px;  padding-left: 15px;';
+        div.style = 'display: inline-block; width: 100%; cursor: pointer; border: 1px solid #afafaf; border-radius: 5px; margin-top: 10px; padding-top: 10px;  padding-bottom: 10px;  padding-left: 15px;';
       }
       div.innerHTML = `<div style="display:inline-block;"><strong>${sender}</strong></div>
       <div style="display:inline-block; padding-left: 15px; width: 70%;">${subject}</div>
