@@ -129,7 +129,7 @@ function reply_email(email){
   }else{
     document.querySelector('#compose-subject').value = `Re: ${email.subject}`;
   } 
-  document.querySelector('#compose-body').value = `On ${email.timestamp} ${email.sender} wrote: ${email.body}`;
+  document.querySelector('#compose-body').value = `On ${email.timestamp} ${email.sender} wrote: \n${email.body}`;
   const form = document.getElementById('compose-form');
   form.addEventListener('submit', send_email)
 }
