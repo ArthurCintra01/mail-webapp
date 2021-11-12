@@ -29,3 +29,7 @@ python manage.py migrate
 ```
 python manage.py runserver
 ```
+## Funcionamento:
+Segue abaixo o link do video mostrando as funcionalidades do projeto (audio em inglês).
+
+[video](https://youtu.be/qgCsQFNgTRI)
